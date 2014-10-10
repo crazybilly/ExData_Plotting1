@@ -1,6 +1,6 @@
 require(dplyr)
 
-#check it exists, then get the file
+#check if it exists; if not, get the file
 if (!file.exists("household_power_consumption.zip")) {
    
    download.file(
@@ -10,7 +10,7 @@ if (!file.exists("household_power_consumption.zip")) {
    unzip("household_power_consumption.zip")
 } else { cat("file already downloaded") }
 
-#test if the hpc dtaa file existread in the file
+#test if the hpc dtaa file exist; if not, read in the file
 
 if (!exists ('hpcSub')) {
 hpc <- read.table("household_power_consumption.txt",header=T,sep=";"
@@ -27,9 +27,9 @@ hpc  <- hpc %>%
    ) %>%
    select ( -Date, -Time, -datetimechr)
 
+
 # filter for the appropriate dates
 hpcSub  <- hpc %>%
    filter( date >= as.Date("2007-02-01"), date <= as.Date("2007-02-02"))
 
 }
-

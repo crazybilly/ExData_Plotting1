@@ -1,3 +1,4 @@
+# load and segment the data into hpcSub
 source('loaddata.R')
 
 #start plotting
