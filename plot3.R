@@ -1,47 +1,27 @@
-#check it exists, then get the file
-if (!file.exists("household_power_consumption.zip")) {
-     
-     download.file(
-          "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip",
-          "household_power_consumption.zip")
-     
-     unzip("household_power_consumption.zip")
-} else { cat("file already downloaded") }
+require(dplyr)
+source('loaddata.R')
 
-#read in the file
+# open the png device
+png("plot3.png",width = 480,height = 480)
 
-hpc <- read.table("household_power_consumption.txt",header=T,sep=";",
-                  stringsAsFactors=F,na.strings="?"
-          #for testing------------------------------------------
-          ,nrows=100000
-                  )
-
-#create a date/time field
-hpc$datetime <- paste(hpc$Date,hpc$Time,sep=" ")
-hpc$datetime <- as.Date(strptime(hpc$datetime,format="%d/%m/%Y %H:%M:%S"))
-hpc.target <- hpc$datetime == as.Date("2007-02-01") | hpc$datetime==("2007-02-02")
-
-#subset to get the desired days
-hpc.sub <- hpc[hpc.target,]
-
-par(
-     cex.axis=.7,
-     col.axis="#030303",
-     cex.lab = .7,
-     mar=c(4,4,3,2),
-     bg="white"
-     
-     
-     )
+#set options
+par (
+   cex.axis=1
+   , col.axis="#030303"
+   , cex.lab = 1
+)
 
 
-with(hpc.sub, 
-     hist(
-          Global_active_power,
-          col="red",
-          border="black",
-          main="Global Active Power",
-          xlab="Global Active Power (kilowatts)",
-          
-          )
-     )
+#plot the data
+plot (Sub_metering_1 ~ datetime,data=hpcSub,col='black',type="l",xlab='',ylab="Energy sub metering")
+lines(Sub_metering_2 ~ datetime,data=hpcSub,col='red')
+lines(Sub_metering_3 ~ datetime,data=hpcSub,col='blue')
+legend('topright'
+       , grep("Sub_meter",names(hpcSub),value=T)
+       , lty=c(1,1)
+       , col=c('black','red','blue')
+)
+
+
+#write the file
+dev.off()
