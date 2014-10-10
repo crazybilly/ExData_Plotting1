@@ -13,10 +13,9 @@ if (!file.exists("household_power_consumption.zip")) {
 #test if the hpc dtaa file existread in the file
 
 if (!exists ('hpcSub')) {
-hpc <- read.table("household_power_consumption.txt",header=T,sep=";",
-                  stringsAsFactors=F,na.strings="?"
-                  #for testing------------------------------------------
-                  ,nrows=100000
+hpc <- read.table("household_power_consumption.txt",header=T,sep=";"
+                  , stringsAsFactors=F,na.strings="?"
+                  , nrows = 100000
 )
 
 #create a date/time field
